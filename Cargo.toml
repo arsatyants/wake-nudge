@@ -1,0 +1,7 @@
+[package]
+name = "wake-nudge"
+version = "0.1.0"
+edition = "2021"
+description = "Small CLI that periodically nudges the cursor to keep a local session active."
+
+[dependencies]
