@@ -58,6 +58,24 @@ Agent commands:
 ./target/release/wake-nudge --uninstall-agent
 ```
 
+## GitHub Releases
+
+Every pushed tag that starts with `v` builds a macOS release binary and attaches
+it to a GitHub Release.
+
+Create a release:
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+After the workflow finishes, download:
+
+```text
+wake-nudge-aarch64-apple-darwin.tar.gz
+```
+
 Options:
 
 ```text

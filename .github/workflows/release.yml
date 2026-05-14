@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    name: Build macOS binary
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+      - name: Run tests
+        run: cargo test --locked
+
+      - name: Build release binary
+        run: cargo build --release --locked --target aarch64-apple-darwin
+
+      - name: Package binary
+        run: |
+          mkdir -p dist/wake-nudge-aarch64-apple-darwin
+          cp target/aarch64-apple-darwin/release/wake-nudge dist/wake-nudge-aarch64-apple-darwin/
+          cp README.md dist/wake-nudge-aarch64-apple-darwin/
+          tar -czf dist/wake-nudge-aarch64-apple-darwin.tar.gz -C dist wake-nudge-aarch64-apple-darwin
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/wake-nudge-aarch64-apple-darwin.tar.gz
+          generate_release_notes: true
